@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('turns', function (Blueprint $table) {
@@ -16,16 +13,13 @@ return new class extends Migration
             $table->foreignId('fermentation_id')->constrained('fermentations')->onDelete('cascade');
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
-            $table->string('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('turns');
     }
-};
+}; 
