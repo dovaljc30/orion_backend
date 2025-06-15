@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             DeviceSeeder::class,
+            GenotypeSeeder::class,
+            FermentationSeeder::class,
         ]);
     }
 }
