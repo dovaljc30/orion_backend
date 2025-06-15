@@ -17,11 +17,12 @@ class DeviceController extends Controller
     {
         $request->validate([
             'serial_number' => 'required|unique:devices',
-            'code' => 'required'
+            'code' => 'required',
+            'status' => 'nullable|in:1,0'
         ]);
 
         $data = $request->all();
-        $data['status'] = 'active';
+        $data['status'] = $request->status ?? 1;
 
         $device = Device::create($data);
         return response()->json($device, 201);
@@ -40,10 +41,15 @@ class DeviceController extends Controller
         $request->validate([
             'serial_number' => 'required|unique:devices,serial_number,' . $id,
             'code' => 'required',
-            'status' => 'required|in:active,inactive'
+            'status' => 'nullable|in:1,0'
         ]);
 
-        $device->update($request->all());
+        $data = $request->all();
+        if (!isset($data['status'])) {
+            $data['status'] = 1;
+        }
+
+        $device->update($data);
         return response()->json($device);
     }
 
@@ -52,10 +58,10 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
         
         $request->validate([
-            'status' => 'required|in:active,inactive'
+            'status' => 'nullable|in:1,0'
         ]);
 
-        $device->update(['status' => $request->status]);
+        $device->update(['status' => $request->status ?? 1]);
         return response()->json($device);
     }
 

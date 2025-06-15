@@ -16,23 +16,19 @@ class DeviceSeeder extends Seeder
         $devices = [
             [
                 'serial_number' => 'DEV001',
-                'code' => 'FERM-001',
-                'status' => 'active'
+                'code' => 'FERM-001'
             ],
             [
                 'serial_number' => 'DEV002',
-                'code' => 'FERM-002',
-                'status' => 'active'
+                'code' => 'FERM-002'
             ],
             [
                 'serial_number' => 'DEV003',
-                'code' => 'FERM-003',
-                'status' => 'inactive'
+                'code' => 'FERM-003'
             ],
             [
                 'serial_number' => 'DEV004',
-                'code' => 'FERM-004',
-                'status' => 'active'
+                'code' => 'FERM-004'
             ]
         ];
 

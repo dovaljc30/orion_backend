@@ -19,11 +19,11 @@ class TurnController extends Controller
             'fermentation_id' => 'required|exists:fermentations,id',
             'start_time' => 'required|date',
             'end_time' => 'nullable|date',
-            'status' => 'nullable|string'
+            'status' => 'nullable|in:1,0'
         ]);
 
         $data = $request->all();
-        $data['status'] = $request->status ?? 'active';
+        $data['status'] = $request->status ?? 1;
 
         $turn = Turn::create($data);
         return response()->json($turn, 201);
@@ -43,12 +43,12 @@ class TurnController extends Controller
             'fermentation_id' => 'required|exists:fermentations,id',
             'start_time' => 'required|date',
             'end_time' => 'nullable|date',
-            'status' => 'nullable|string'
+            'status' => 'nullable|in:1,0'
         ]);
 
         $data = $request->all();
         if (!isset($data['status'])) {
-            $data['status'] = 'active';
+            $data['status'] = 1;
         }
 
         $turn->update($data);

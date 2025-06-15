@@ -29,7 +29,7 @@ class FermentationController extends Controller
             'device_id' => 'required|exists:devices,id',
             'start_time' => 'required|date',
             'end_time' => 'nullable|date',
-            'status' => 'nullable|string|in:active,paused,completed,cancelled,inactive',
+            'status' => 'nullable|in:1,0',
             'type' => 'required|in:Especial,Premium',
             'note' => 'nullable|string',
             'genotypes' => 'required|array',
@@ -41,11 +41,11 @@ class FermentationController extends Controller
             DB::beginTransaction();
 
             $data = $request->all();
-            $data['status'] = $request->status ?? 'active';
+            $data['status'] = $request->status ?? 1;
 
             // Verificar si el dispositivo ya tiene una fermentación activa
             $activeFermentation = Fermentation::where('device_id', $request->device_id)
-                ->where('status', 'active')
+                ->where('status', 1)
                 ->first();
 
             if ($activeFermentation) {
@@ -109,7 +109,7 @@ class FermentationController extends Controller
             'device_id' => 'required|exists:devices,id',
             'start_time' => 'required|date',
             'end_time' => 'nullable|date',
-            'status' => 'required|string',
+            'status' => 'nullable|in:1,0',
             'type' => 'required|in:Especial,Premium',
             'note' => 'nullable|string',
             'genotypes' => 'required|array',
@@ -121,11 +121,14 @@ class FermentationController extends Controller
             DB::beginTransaction();
 
             $data = $request->all();
+            if (!isset($data['status'])) {
+                $data['status'] = 1;
+            }
 
             // Verificar si el dispositivo ya tiene una fermentación activa (excluyendo la actual)
-            if ($data['status'] === 'active') {
+            if ($data['status'] === 1) {
                 $activeFermentation = Fermentation::where('device_id', $request->device_id)
-                    ->where('status', 'active')
+                    ->where('status', 1)
                     ->where('id', '!=', $id)
                     ->first();
 
@@ -285,14 +288,14 @@ class FermentationController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|string|in:active,paused,completed,cancelled,inactive'
+            'status' => 'nullable|in:1,0'
         ]);
 
         $fermentation = Fermentation::findOrFail($id);
-        $fermentation->status = $request->status;
+        $fermentation->status = $request->status ?? 1;
         
-        // Si el estado es 'completed', actualizamos end_time
-        if ($request->status === 'completed') {
+        // Si el estado es 0 (inactivo), actualizamos end_time
+        if ($fermentation->status === 0) {
             $fermentation->end_time = now();
         }
         

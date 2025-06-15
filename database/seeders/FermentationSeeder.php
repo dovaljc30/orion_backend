@@ -15,9 +15,6 @@ class FermentationSeeder extends Seeder
             [
                 'device_id' => 1,
                 'start_time' => '2024-03-21 10:00:00',
-                'end_time' => null,
-                'status' => 'in_progress',
-                'title' => 'Fermentación Premium #1',
                 'type' => 'Premium',
                 'note' => 'Fermentación Premium con un solo genotipo',
                 'created_at' => Carbon::now(),
@@ -26,9 +23,6 @@ class FermentationSeeder extends Seeder
             [
                 'device_id' => 2,
                 'start_time' => '2024-03-21 10:00:00',
-                'end_time' => null,
-                'status' => 'in_progress',
-                'title' => 'Fermentación Especial #1',
                 'type' => 'Especial',
                 'note' => 'Fermentación Especial con múltiples genotipos',
                 'created_at' => Carbon::now(),
@@ -37,10 +31,8 @@ class FermentationSeeder extends Seeder
             [
                 'device_id' => 3,
                 'start_time' => '2024-03-21 10:00:00',
-                'end_time' => null,
-                'status' => 'in_progress',
-                'title' => 'Fermentación Premium #2',
                 'type' => 'Premium',
+                'end_time' => '2024-03-21 15:00:00',
                 'note' => 'Fermentación Premium con genotipo único',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -48,9 +40,6 @@ class FermentationSeeder extends Seeder
             [
                 'device_id' => 4,
                 'start_time' => '2024-03-21 10:00:00',
-                'end_time' => null,
-                'status' => 'in_progress',
-                'title' => 'Fermentación Especial #2',
                 'type' => 'Especial',
                 'note' => 'Fermentación Especial con mezcla de genotipos',
                 'created_at' => Carbon::now(),
