@@ -1,0 +1,1137 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Autenticación",
+        "description": "API para la autenticación de usuarios",
+        "contact": {
+            "email": "admin@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Registrar un nuevo usuario",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Credenciales inválidas"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener información del usuario actual",
+                "operationId": "7c1cf647d76fad4b3eb1549fa4fe2f4c",
+                "responses": {
+                    "200": {
+                        "description": "Información del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/devices": {
+            "get": {
+                "tags": [
+                    "Devices"
+                ],
+                "summary": "Obtener todos los dispositivos",
+                "operationId": "e2533dd541615acc1fc71aef970e3ec8",
+                "responses": {
+                    "200": {
+                        "description": "Lista de dispositivos"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Devices"
+                ],
+                "summary": "Crear un nuevo dispositivo",
+                "operationId": "47d82c79b47be5f356407f0c9b09da80",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "serial_number",
+                                    "code",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "serial_number": {
+                                        "type": "string",
+                                        "example": "SN20240614A"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "DEV-1001"
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Dispositivo creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/devices/{id}": {
+            "get": {
+                "tags": [
+                    "Devices"
+                ],
+                "summary": "Obtener un dispositivo por ID",
+                "operationId": "b004716f2d350e801eb4bb5cfae42aa3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del dispositivo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dispositivo encontrado"
+                    },
+                    "404": {
+                        "description": "Dispositivo no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/devices/{id}/status": {
+            "put": {
+                "tags": [
+                    "Devices"
+                ],
+                "summary": "Actualizar el estado de un dispositivo",
+                "operationId": "7c5b30ee6ec655436e97c058b2cd95b9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del dispositivo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado actualizado"
+                    },
+                    "404": {
+                        "description": "Dispositivo no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/fermentations": {
+            "get": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Obtener todas las fermentaciones",
+                "operationId": "9eff9ff1b1a3a0c7bf42a226c3fa399d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de fermentaciones"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Crear una nueva fermentación",
+                "operationId": "930ae03cf1c6c474f0fbc782bfd48e5b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "device_id",
+                                    "start_time",
+                                    "status",
+                                    "type",
+                                    "genotypes"
+                                ],
+                                "properties": {
+                                    "device_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-06-14T10:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": null,
+                                        "nullable": true
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "example": 1
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Especial",
+                                            "Premium"
+                                        ],
+                                        "example": "Premium"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Nota de prueba",
+                                        "nullable": true
+                                    },
+                                    "genotypes": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "quantity": {
+                                                    "type": "number",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Fermentación creada exitosamente"
+                    },
+                    "400": {
+                        "description": "Error de validación o lógica de negocio"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/fermentations/{id}": {
+            "get": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Obtener una fermentación por ID",
+                "operationId": "5fd1a45bcc2330dae67d929f7afd29b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fermentación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fermentación encontrada"
+                    },
+                    "404": {
+                        "description": "Fermentación no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/fermentations/{id}/measurements": {
+            "get": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Obtener las mediciones de una fermentación",
+                "operationId": "c92d57258f42a6d542aefff6c8c85c74",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fermentación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mediciones encontradas"
+                    },
+                    "404": {
+                        "description": "Fermentación no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/fermentations/{id}/measurements/{limit}": {
+            "get": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Obtener las últimas mediciones de una fermentación con límite",
+                "operationId": "3692ec3448ef58f434640e6d91cdd702",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fermentación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "path",
+                        "description": "Cantidad máxima de registros a devolver",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mediciones encontradas"
+                    },
+                    "404": {
+                        "description": "Fermentación no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/fermentations/{id}/status": {
+            "put": {
+                "tags": [
+                    "Fermentations"
+                ],
+                "summary": "Actualizar el estado de una fermentación",
+                "operationId": "602174340f0c846528054bd04dd72d7b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fermentación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado actualizado"
+                    },
+                    "404": {
+                        "description": "Fermentación no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/genotypes": {
+            "get": {
+                "tags": [
+                    "Genotypes"
+                ],
+                "summary": "Obtener todos los genotipos",
+                "operationId": "dd9c0c2e11b4d6faf82739469db2b08a",
+                "responses": {
+                    "200": {
+                        "description": "Lista de genotipos"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Genotypes"
+                ],
+                "summary": "Crear un nuevo genotipo",
+                "operationId": "2d62f54fbf4e6c9cba7894761ffd2a5a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "code"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "CCN-51"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "GEN-001"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Genotipo de cacao resistente a enfermedades",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "name": "CCN-51",
+                                "code": "GEN-001",
+                                "description": "Genotipo de cacao resistente a enfermedades"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Genotipo creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/genotypes/{id}": {
+            "get": {
+                "tags": [
+                    "Genotypes"
+                ],
+                "summary": "Obtener un genotipo por ID",
+                "operationId": "71f7bc3c71458f1b5f5e64e8b975fcc2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del genotipo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Genotipo encontrado"
+                    },
+                    "404": {
+                        "description": "Genotipo no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/measurements": {
+            "get": {
+                "tags": [
+                    "Measurements"
+                ],
+                "summary": "Obtener todas las mediciones",
+                "operationId": "67427060663f6bf2be82d6fc908f2784",
+                "responses": {
+                    "200": {
+                        "description": "Lista de mediciones"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Measurements"
+                ],
+                "summary": "Crear una nueva medición",
+                "operationId": "7a4ab846a45b1273acdd9e8f4695b305",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "sensor_id",
+                                    "date",
+                                    "data",
+                                    "measurement_type"
+                                ],
+                                "properties": {
+                                    "sensor_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-06-14T10:00:00"
+                                    },
+                                    "data": {
+                                        "type": "number",
+                                        "example": 23.5
+                                    },
+                                    "measurement_type": {
+                                        "type": "string",
+                                        "example": "temperatura"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "sensor_id": 1,
+                                "date": "2024-06-14T10:00:00",
+                                "data": 23.5,
+                                "measurement_type": "temperatura"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Medición creada exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/measurements/{id}": {
+            "get": {
+                "tags": [
+                    "Measurements"
+                ],
+                "summary": "Obtener una medición por ID",
+                "operationId": "3aa96b516c4a271d423c91fd4a65e6be",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la medición",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medición encontrada"
+                    },
+                    "404": {
+                        "description": "Medición no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Measurements"
+                ],
+                "summary": "Eliminar una medición por ID",
+                "operationId": "2e6989a23288135e4c90128fc5d0ba33",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la medición",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Medición eliminada"
+                    },
+                    "404": {
+                        "description": "Medición no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/sensors": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Obtener todos los sensores",
+                "operationId": "b4af7f406a8dfe72b2804568c6eb1fd3",
+                "responses": {
+                    "200": {
+                        "description": "Lista de sensores"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Crear un nuevo sensor",
+                "operationId": "8cd7026984a4b38e0e82a3e0dfd74314",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "device_id",
+                                    "type",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "device_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "temperatura"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Sensor Temp 1"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "device_id": 1,
+                                "type": "temperatura",
+                                "name": "Sensor Temp 1"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sensor creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/sensors/{id}": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Obtener un sensor por ID",
+                "operationId": "841b8aada35a85445909f9e1ba2914a5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del sensor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor encontrado"
+                    },
+                    "404": {
+                        "description": "Sensor no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/turns": {
+            "get": {
+                "tags": [
+                    "Turns"
+                ],
+                "summary": "Obtener todos los turnos",
+                "operationId": "78fd976a6bf5135be62284e00adf23ae",
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Turns"
+                ],
+                "summary": "Crear un nuevo turno",
+                "operationId": "c3fe5cfc2db101a3e130c143a1a03293",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "fermentation_id",
+                                    "start_time"
+                                ],
+                                "properties": {
+                                    "fermentation_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-06-14T10:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": null,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "fermentation_id": 1,
+                                "start_time": "2024-06-14T10:00:00",
+                                "end_time": null
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Turno creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/turns/{id}": {
+            "get": {
+                "tags": [
+                    "Turns"
+                ],
+                "summary": "Obtener un turno por ID",
+                "operationId": "1d8982373892a9c38118f54d7326a653",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del turno",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Turno encontrado"
+                    },
+                    "404": {
+                        "description": "Turno no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Devices",
+            "description": "Devices"
+        },
+        {
+            "name": "Fermentations",
+            "description": "Fermentations"
+        },
+        {
+            "name": "Genotypes",
+            "description": "Genotypes"
+        },
+        {
+            "name": "Measurements",
+            "description": "Measurements"
+        },
+        {
+            "name": "Sensors",
+            "description": "Sensors"
+        },
+        {
+            "name": "Turns",
+            "description": "Turns"
+        }
+    ]
+}

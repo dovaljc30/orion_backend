@@ -11,12 +11,51 @@ use Carbon\Carbon;
 
 class MeasurementController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/measurements",
+     *     summary="Obtener todas las mediciones",
+     *     tags={"Measurements"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de mediciones"
+     *     )
+     * )
+     */
     public function index()
     {
         $measurements = Measurement::with('sensor')->get();
         return response()->json($measurements);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/measurements",
+     *     summary="Crear una nueva medición",
+     *     tags={"Measurements"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"sensor_id","date","data","measurement_type"},
+     *             @OA\Property(property="sensor_id", type="integer", example=1),
+     *             @OA\Property(property="date", type="string", format="date-time", example="2024-06-14T10:00:00"),
+     *             @OA\Property(property="data", type="number", example=23.5),
+     *             @OA\Property(property="measurement_type", type="string", example="temperatura"),
+     *             example={"sensor_id":1,"date":"2024-06-14T10:00:00","data":23.5,"measurement_type":"temperatura"}
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Medición creada exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -90,6 +129,29 @@ class MeasurementController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/measurements/{id}",
+     *     summary="Obtener una medición por ID",
+     *     tags={"Measurements"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la medición",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Medición encontrada"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Medición no encontrada"
+     *     )
+     * )
+     */
     public function show($id)
     {
         $measurement = Measurement::with('sensor')->findOrFail($id);
@@ -111,6 +173,29 @@ class MeasurementController extends Controller
         return response()->json($measurement);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/measurements/{id}",
+     *     summary="Eliminar una medición por ID",
+     *     tags={"Measurements"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la medición",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Medición eliminada"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Medición no encontrada"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $measurement = Measurement::findOrFail($id);

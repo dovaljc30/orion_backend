@@ -19,7 +19,8 @@ class Fermentation extends Model
         'status',
         'title',
         'type',
-        'note'
+        'note',
+        'code', 
     ];
 
     protected static function boot()
